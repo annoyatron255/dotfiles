@@ -1,0 +1,21 @@
+snippet guard "create header guard"
+#ifdef ${1:`!p snip.rv = fn.replace(".","_").upper()`}
+#define $1
+
+$0
+
+#endif // end $1 header guard
+endsnippet
+
+snippet main "main function"
+int main(int argc, char **argv) {
+	$0
+	return 0;
+}
+endsnippet
+
+snippet for "for loop"
+for (int ${1:i} = 0; $1 < $2; $1++) {
+	$0
+}
+endsnippet

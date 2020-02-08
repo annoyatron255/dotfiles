@@ -1,0 +1,29 @@
+mpd_music_dir = "~/Music"
+
+media_library_primary_tag = album_artist
+media_library_albums_split_by_date = no
+
+mouse_support = yes
+mouse_list_scroll_whole_page = "no"
+lines_scrolled = "3"
+default_find_mode = wrapped
+volume_change_step = 0
+locked_screen_width_part = 50
+ask_for_locked_screen_width_part = no
+
+visualizer_fifo_path = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_sync_interval = "30" 
+visualizer_in_stereo = "yes"
+visualizer_type = "spectrum"
+visualizer_look = "+▋"
+
+user_interface = "alternative"
+progressbar_look=━━─
+display_volume_level = no
+display_bitrate = yes
+#playlist_separate_albums = yes
+titles_visibility = no
+song_columns_list_format = (25)[]{a|A} (4f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{br} (7f)[magenta]{lr}
+#current_item_prefix = $(yellow)$u
+#current_item_suffix = $/u$(end)
