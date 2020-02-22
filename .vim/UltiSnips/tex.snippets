@@ -458,6 +458,15 @@ snip.rv = subprocess.check_output(['wolframscript', '-code', code])
 `
 endsnippet
 
+priority 20000
+snippet 'math(.*)math' "evaluate mathematica" wr
+`!p
+import subprocess
+code = 'ToString[ToExpression["' + match.group(1).replace('\\', '\\\\') + '", TeXForm], TeXForm]'
+snip.rv = subprocess.check_output(['wolframscript', '-code', code])
+`
+endsnippet
+
 priority 1000
 snippet sympy "sympy block " w
 sympy $1 sympy$0
