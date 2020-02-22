@@ -500,7 +500,8 @@ k, m, n = symbols('k m n', integer=True)
 f, g, h = symbols('f g h', cls=Function)
 init_printing()
 expr = eval('parse_latex(r"' + match.group(1) + '")')
-snip.rv = latex(simplify(logcombine(expr.doit())))
+replacements = [(Symbol('pi'),pi),(Symbol('e'),exp(1)),(Symbol('i'),'I')]
+snip.rv = latex(expr.subs(replacements).doit())
 `
 endsnippet
 
