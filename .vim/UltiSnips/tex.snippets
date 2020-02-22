@@ -480,6 +480,21 @@ snip.rv = eval('latex(' + match.group(1).replace('\\', '') \
 \\]
 endsnippet
 
+priority 20000
+context "math()"
+snippet 'sympy(.*)sympy' "evaluate latex in sympy" wr
+`!p
+from sympy import *
+from sympy.parsing.latex import parse_latex
+x, y, z, t = symbols('x y z t')
+k, m, n = symbols('k m n', integer=True)
+f, g, h = symbols('f g h', cls=Function)
+init_printing()
+expr = eval('parse_latex(r"' + match.group(1) + '")')
+snip.rv = latex(simplify(logcombine(expr.doit())))
+`
+endsnippet
+
 priority 100
 context "math()"
 snippet "\[\[(.*?)\]\]" "Vector" wr
