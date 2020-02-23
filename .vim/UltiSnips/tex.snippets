@@ -499,9 +499,11 @@ x, y, z, t = symbols('x y z t')
 k, m, n = symbols('k m n', integer=True)
 f, g, h = symbols('f g h', cls=Function)
 init_printing()
-expr = eval('parse_latex(r"' + match.group(1) + '")')
-replacements = [(Symbol('pi'),pi),(Symbol('e'),exp(1)),(Symbol('i'),'I')]
-snip.rv = latex(expr.subs(replacements).doit())
+expr = eval('parse_latex(r"' + match.group(1) \
+    .replace(r"\left","") \
+    .replace(r"\right","") + '")')
+sympy_replacements = [(Symbol('pi'),pi),(Symbol('e'),exp(1)),(Symbol('i'),'I')]
+snip.rv = latex(expr.subs(sympy_replacements).doit())
 `
 endsnippet
 
