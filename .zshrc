@@ -191,9 +191,11 @@ function vimbuffer() {
 
 	# Remove trailing newlines
 	printf '%s\n' "$(cat "$print_file")" > "$written_file"
-	local scrollback_line_length=$(wc -l < "$written_file")
 	# Remove last line of buffer
-	tail -n 1 "$written_file" | wc -c | xargs -I {} truncate "$written_file" -s -{}
+	tail -n $(tac "$written_file" | grep -nm1 "$prompt_string" | cut -d : -f 1) \
+		"$written_file" | wc -c | xargs -I {} truncate "$written_file" -s -{}
+
+	local scrollback_line_length=$(( $(wc -l < "$written_file") + 1 ))
 	echo "$prompt_string$PREBUFFER$BUFFER" >> "$written_file"
 
 	local byte_offset=$(( ${#PREBUFFER//$'\n'/} + ${#LBUFFER//$'\n'/} + \
