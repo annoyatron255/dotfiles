@@ -71,6 +71,7 @@ ZSH_THEME="robbyrussell"
 plugins=(
 	git
 	fzf
+	jump
 	zsh-syntax-highlighting
 )
 
@@ -144,7 +145,12 @@ function notes() {
 }
 
 function t() {
-	zsh
+	if [ $# -eq 0 ]
+	then
+		zsh
+	else
+		$@
+	fi
 }
 
 function za() {
@@ -176,6 +182,35 @@ function tx() {
 	fi
 }
 
+function vimbuffer() {
+	# Paste scrollback to print_file. Terminal specific.
+	xdotool key --window $WINDOWID ctrl+Print
+	local print_file="/tmp/urxvt_screen"
+	local written_file="/tmp/urxvt_buffer.sh"
+	local prompt_string="$(print -P "$PS1" | sed 's/\x1b\[[0-9;]*m//g')"
+
+	# Remove trailing newlines
+	printf '%s\n' "$(cat "$print_file")" > "$written_file"
+	local scrollback_line_length=$(wc -l < "$written_file")
+	# Remove last line of buffer
+	tail -n 1 "$written_file" | wc -c | xargs -I {} truncate "$written_file" -s -{}
+	echo "$prompt_string$PREBUFFER$BUFFER" >> "$written_file"
+
+	local byte_offset=$(( ${#PREBUFFER//$'\n'/} + ${#LBUFFER//$'\n'/} + \
+		$(printf "%s" "$prompt_string" | wc -m) ))
+	vim "+${scrollback_line_length}" "+normal ${byte_offset} " -- \
+		"$written_file" </dev/tty
+
+	print -Rz - "$(tail -n $(tac "$written_file" | grep -nm1 "$prompt_string" \
+		| cut -d : -f 1) "$written_file" | tail -c +$(( $(printf "%s" \
+		"$prompt_string" | wc -c) + 1 )))"
+
+	rm "$written_file"
+	zle send-break
+}
+zle -N vimbuffer
+bindkey '^P' vimbuffer
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -203,4 +238,5 @@ export QUOTING_STYLE=literal
 export SAVEHIST=1000000
 #alias za="zathura"
 alias tdir='mkdir $(date "+%Y-%m-%d")'
+alias j="jump"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles_git/ --work-tree=$HOME'
