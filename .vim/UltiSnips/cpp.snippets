@@ -1,5 +1,5 @@
 snippet guard "create header guard"
-#ifdef ${1:`!p snip.rv = fn.replace(".","_").upper()`}
+#ifndef ${1:`!p snip.rv = fn.replace(".","_").upper()`}
 #define $1
 
 $0

@@ -25,7 +25,7 @@ endglobal
 
 snippet beg "begin/end" bA
 \\begin{$1}
-	$0
+	${0:${VISUAL}}
 \\end{$1}
 endsnippet
 
@@ -42,7 +42,7 @@ snippet adm "aligned display math" bA
 endsnippet
 
 snippet mk "inline math" wA
-$$1$$0
+$${1:${VISUAL}}$$0
 endsnippet
 
 # fractions
@@ -204,42 +204,44 @@ snippet ** "dot product" iA
 \\cdot
 endsnippet
 
+priority 10
 snippet si "SI units" i
 \\,\\si{$1}$0
 endsnippet
 
+priority 10
 snippet SI "SI units with number" i
 \\SI{$1}{$2}$0
 endsnippet
 
-#priority 10
-#context "math()"
-#snippet "dot" "dot" riA
-#\\dot{$1}$0
-#endsnippet
-#
-#priority 100
-#context "math()"
-#snippet "([a-zA-Z])dot" "dot" riA
-#\\dot{`!p snip.rv=match.group(1)`}
-#endsnippet
-#
-#priority 20
-#context "math()"
-#snippet "ddot" "ddot" riA
-#\\ddot{$1}$0
-#endsnippet
-#
-#priority 200
-#context "math()"
-#snippet "([a-zA-Z])ddot" "ddot" riA
-#\\ddot{`!p snip.rv=match.group(1)`}
-#endsnippet
+snippet py "inline python" i
+\\py{$1}$0
+endsnippet
+
+priority 100
+snippet pysi "python SI units with number" iA
+\\py{SI($1, r"${2:`!p
+var_to_unit = {'V': 'V', 'I': 'A', 'R': r"\ohm", 'P': 'W', 'C': 'F', 'L': 'H', 'g': 'S', 'q': 'C', 'E': 'J', 'f': "Hz", 't': 's'}
+if t[1] != "":
+	if t[1][0] in var_to_unit:
+		snip.rv = var_to_unit[t[1][0]]
+`}")}$0
+endsnippet
+
+priority 100
+snippet pySI "python SI units with number" iA
+\\py{SI($1, r"${2:`!p
+var_to_unit = {'V': 'V', 'I': 'A', 'R': r"\ohm", 'P': 'W', 'C': 'F', 'L': 'H', 'g': 'S', 'q': 'C', 'E': 'J', 'f': "Hz", 't': 's'}
+if t[1] != "":
+	if t[1][0] in var_to_unit:
+		snip.rv = var_to_unit[t[1][0]]
+`}")}$0
+endsnippet
 
 priority 10
 context "math()"
 snippet "hat" "hat" riA
-\\hat{$1}$0
+\\hat{${1:${VISUAL}}$0
 endsnippet
 
 priority 100
@@ -251,7 +253,7 @@ endsnippet
 priority 10
 context "math()"
 snippet "bar" "bar" riA
-\\overline{$1}$0
+\\overline{${1:${VISUAL}}$0
 endsnippet
 
 priority 100
@@ -263,7 +265,7 @@ endsnippet
 priority 10
 context "math()"
 snippet "vec" "vec" riA
-\\vec{$1}$0
+\\vec{${1:${VISUAL}}$0
 endsnippet
 
 priority 100
@@ -294,19 +296,23 @@ snippet lr "left( right)" i
 \left( ${1:${VISUAL}} \right) $0
 endsnippet
 
-snippet lr( "left( right)" i
+snippet lr( "left( right)" iA
 \left( ${1:${VISUAL}} \right) $0
 endsnippet
 
-snippet lr| "left| right|" i
+snippet lr| "left| right|" iA
 \left| ${1:${VISUAL}} \right| $0
 endsnippet
 
-snippet lr{ "left\{ right\}" i
+snippet rr| "left. right|" iA
+\left. ${1:${VISUAL}} \right| $0
+endsnippet
+
+snippet lr{ "left\{ right\}" iA
 \left\\{ ${1:${VISUAL}} \right\\} $0
 endsnippet
 
-snippet lr[ "left[ right]" i
+snippet lr[ "left[ right]" iA
 \left[ ${1:${VISUAL}} \right] $0
 endsnippet
 
@@ -348,11 +354,6 @@ snippet sqrt "square root" iA
 \\sqrt{$1}$0
 endsnippet
 
-context "math()"
-snippet R "real numbers" w
-\\mathbb{R}
-endsnippet
-
 # special chars
 context "math()"
 snippet '(?<!\\)(pi|ell|tau|mu|chi|xi|theta|omega)' "lowercase greek" riA
@@ -377,12 +378,26 @@ snippet bmat "bracket matrix" iA
 endsnippet
 
 # typefaces
+priority 10
 snippet bf "boldface" w
 \\textbf{${1:${VISUAL}}}$0
 endsnippet
 
+priority 100
+context "math()"
+snippet bf "math boldface" w
+\\mathbf{${1:${VISUAL}}}$0
+endsnippet
+
+priority 10
 snippet it "italicize" w
 \\textit{${1:${VISUAL}}}$0
+endsnippet
+
+priority 100
+context "math()"
+snippet it "math italicize" w
+\\mathit{${1:${VISUAL}}}$0
 endsnippet
 
 snippet ul "underline" w
@@ -403,6 +418,24 @@ endsnippet
 context "math()"
 snippet txt "text mode" iA
 \\text{$1}$0
+endsnippet
+
+context "math()"
+snippet bb "math blackboard" w
+\\mathbb{${1:${VISUAL}}}$0
+endsnippet
+
+# lists
+snippet enum "enumerate env" b
+\\begin{enumerate}
+	\\item ${1:${VISUAL}}
+\\end{enumerate}$0
+endsnippet
+
+snippet itemize "itemize env" b
+\\begin{itemize}
+	\\item ${1:${VISUAL}}
+\\end{itemize}$0
 endsnippet
 
 # sections
@@ -503,7 +536,9 @@ expr = eval('parse_latex(r"' + match.group(1) \
     .replace(r"\left","") \
     .replace(r"\right","") + '")')
 sympy_replacements = [(Symbol('pi'),pi),(Symbol('e'),exp(1)),(Symbol('i'),'I')]
-snip.rv = latex(expr.subs(sympy_replacements).doit())
+with evaluate(False):
+    expr = expr.subs(sympy_replacements).replace(Function('solve'),solve).replace(Function('Heaviside'),Heaviside)
+snip.rv = latex(expr.doit())
 `
 endsnippet
 
