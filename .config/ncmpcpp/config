@@ -1,3 +1,4 @@
+ncmpcpp_directory="~/.config/ncmpcpp"
 mpd_music_dir = "~/Music"
 
 media_library_primary_tag = album_artist
@@ -18,12 +19,19 @@ visualizer_in_stereo = "yes"
 visualizer_type = "spectrum"
 visualizer_look = "+▋"
 
-user_interface = "alternative"
-progressbar_look=━━─
+#user_interface = "alternative"
+#progressbar_look=━━─
+progressbar_look="━━ "
 display_volume_level = no
 display_bitrate = yes
 #playlist_separate_albums = yes
-titles_visibility = no
+#titles_visibility = no
 song_columns_list_format = (25)[]{a|A} (4f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{br} (7f)[magenta]{lr}
-#current_item_prefix = $(yellow)$u
-#current_item_suffix = $/u$(end)
+#current_item_prefix = [3m
+#current_item_suffix = [0m
+
+header_visibility = "no"
+statusbar_visibility = "no"
+titles_visibility = "no"
+
+allow_for_physical_item_deletion = "no"
