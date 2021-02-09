@@ -560,9 +560,9 @@ endsnippet
 
 context "math()"
 priority 1000
-snippet "\[(.*?)\]" "Matrix" wr
+snippet "\[(.*?),(.*?)\]" "Matrix" wr
 `!p 
-rows = match.group(1).split(",,") # row separator
+rows = (match.group(1) + ',' + match.group(2)).split(",,") # row separator
 snip.rv = "\\begin{bmatrix*}"
 snip >> 1
 for r in rows:
