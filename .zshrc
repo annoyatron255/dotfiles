@@ -68,6 +68,8 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+setopt complete_aliases
+
 plugins=(
 	git
 	fzf
@@ -89,8 +91,7 @@ function yta() {
 
 	printf "#EXTM3U\n#EXTINF:" > $PLAYLIST
 
-	youtube-dl -f bestaudio -j ytsearch:"$*" | jq -cMr .duration | tr '\n' ',' >> $PLAYLIST
-	youtube-dl -f bestaudio --get-title ytsearch:"$*" >> $PLAYLIST
+	youtube-dl -f bestaudio -j ytsearch:"$*" | jq -cMr '(.duration | tostring) + "," + .title' >> $PLAYLIST
 	youtube-dl -f bestaudio -g ytsearch:"$*" >> $PLAYLIST
 
 	mpc load $(basename -s .m3u $PLAYLIST)
@@ -104,7 +105,7 @@ function yt() {
 function m() {
 	if [ $# -eq 0 ]
 	then
-		TRACK="$(mpc listall -f "%file%\t%title%\t%artist%\t%album%" | fzf | head -n 1 | sed "s/\t.*//")"
+		TRACK="$(mpc listall -f "%file%\t%title%\t%artist%\t%album%" | fzf -d '\t' --with-nth=2,3,4 | head -n 1 | sed "s/\t.*//")"
 	else
 		TRACK="$(mpc listall -f "%file%\t%title%\t%artist%\t%album%" | fzf -f "$*" | head -n 1 | sed "s/\t.*//")"
 	fi
@@ -125,23 +126,51 @@ function o() {
 		FILE=$(fzf -f "$*" | head -n 1)
 	fi
 	#xdg-open $FILE < /dev/null > /dev/null 2>&1 & disown
-	mimeo $FILE
-	sleep 5
+	setsid xdg-open $FILE 1>&- 2>&- 0<&-
+	sleep 1
+}
+
+function shader() {
+	SHADER_PATH="$HOME/Code/compton-shaders/"
+	if [ $# -eq 0 ]
+	then
+		SHADER="$(find $SHADER_PATH -type f -iname "*.glsl" | fzf --delimiter / --with-nth -1 | head -n 1)"
+	else
+		SHADER="$(find $SHADER_PATH -type f -iname "*.glsl" | fzf -f "$*" | head -n 1)"
+	fi
+
+	if [ -n "$SHADER" ]
+	then
+		killall picom
+		while killall -0 picom
+		do
+			sleep 1
+		done
+		picom -b --backend glx --force-win-blend --use-damage --glx-fshader-win "$(cat "$SHADER")"
+	fi
 }
 
 function notes() {
-	DATE="$(date "+%Y-%m-%d")"
-	FOLDER="$DATE"
+	if [ $# -eq 0 ]
+	then
+		DATE="$(date "+%Y-%m-%d")"
+		FOLDER="$DATE"
+		FILENAME="notes.tex"
+	else
+		FOLDER="$*"
+		FILENAME="$*.tex"
+	fi
 	index=0
 	while [ -d "$FOLDER" ]; do
 		printf -v FOLDER -- '%s_%01d' "$DATE" "$((++index))"
 	done
 	mkdir $FOLDER
 	cd $FOLDER
-	cp ~/.vim/templates/notes.tex ./
-	sed -i "s/DATE/$(date "+%B %d, %Y")/g" ./notes.tex
-	sed -i "s/SUBJECT/$(basename "$(dirname "$(dirname "$(pwd)")")")/g" ./notes.tex
-	vim +11 +VimtexCompile ./notes.tex
+	cp ~/.vim/templates/latexmkrc ~/.vim/templates/preamble.tex ./
+	cp ~/.vim/templates/notes.tex "./$FILENAME"
+	sed -i "s/DATE/$(date "+%B %-d, %Y")/g" "./$FILENAME"
+	sed -i "s/SUBJECT/$(basename "$(dirname "$(dirname "$(pwd)")")")/g" "./$FILENAME"
+	vim +11 +VimtexCompile "./$FILENAME"
 }
 
 function t() {
@@ -151,6 +180,10 @@ function t() {
 	else
 		$@
 	fi
+}
+
+function manpdf() {
+	zathura <(man -Tpdf $*) & disown
 }
 
 function za() {
@@ -191,7 +224,7 @@ function vimbuffer() {
 
 	# Remove trailing newlines
 	printf '%s\n' "$(cat "$print_file")" > "$written_file"
-	# Remove last line of buffer
+	# Remove last lines of buffer
 	tail -n $(tac "$written_file" | grep -nm1 "$prompt_string" | cut -d : -f 1) \
 		"$written_file" | wc -c | xargs -I {} truncate "$written_file" -s -{}
 
@@ -241,4 +274,5 @@ export SAVEHIST=1000000
 #alias za="zathura"
 alias tdir='mkdir $(date "+%Y-%m-%d")'
 alias j="jump"
+alias feh="feh --scale-down --auto-zoom --auto-rotate --image-bg \"#000100\""
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles_git/ --work-tree=$HOME'

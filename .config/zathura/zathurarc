@@ -1,5 +1,6 @@
 set statusbar-home-tilde true
 set window-title-home-tilde true
+set window-title-basename true
 set selection-clipboard clipboard
 set default-bg "#000100"
 set statusbar-bg "#000100"

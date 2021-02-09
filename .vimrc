@@ -1,16 +1,21 @@
 set nocompatible              " be iMproved, required
 
+let g:ale_completion_enabled = 1
+
 call plug#begin()
 
 Plug 'dense-analysis/ale'
 Plug 'lervag/vimtex'
 Plug 'https://github.com/junegunn/fzf.vim'
 Plug 'https://github.com/SirVer/ultisnips'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'https://github.com/inkarkat/vim-SyntaxRange'
 
 call plug#end()
 
 " ALE
 let g:ale_enabled = 0
+set omnifunc=ale#completion#OmniFunc
 " vimtex
 let g:tex_flavor = "latex"
 let g:vimtex_view_general_viewer = "zathura"
@@ -22,6 +27,8 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
+
+let g:markdown_fenced_languages = ['python', 'tex', 'c']
 
 filetype on
 filetype plugin on 
@@ -45,6 +52,10 @@ set smartcase
 " spelllang
 set spelllang=en_us
 
+" undofile
+set undodir=~/.vim/undodir
+set undofile
+
 " Custom bindings
 let mapleader = ","
 " save file
@@ -64,6 +75,9 @@ inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 command W :w
 command Q :q
 
+" sudo writing
+ca w!! w !sudo tee % > /dev/null
+
 " Default relative number
 set relativenumber
 set number
@@ -76,6 +90,9 @@ set showbreak=>
 " easier splits shortcuts
 noremap <Esc>a <C-w>
 tnoremap <Esc>a <C-w>
+
+" Map completion
+inoremap <C-@> <C-x><C-o>
 
 " Mapping to move lines up/down
 nnoremap <A-j> :m .+1<CR>==
