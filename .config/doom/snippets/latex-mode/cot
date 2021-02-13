@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: cotangent
+# key: cot
+# uuid: cot
+# condition: (and (texmathp) (looking-back "[ \t\n\r]cot" nil) 'auto)
+# --
+\cot `yas-selected-text`$0

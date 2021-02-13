@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: align equals
+# key: ==
+# uuid: ==
+# condition: (and (texmathp) 'auto)
+# --
+&=

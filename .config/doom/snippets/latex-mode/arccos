@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: arccosine
+# key: arccos
+# uuid: arccos
+# condition: (and (texmathp) (looking-back "[ \t\n\r]arccos" nil) 'auto)
+# --
+\arccos `yas-selected-text`$0

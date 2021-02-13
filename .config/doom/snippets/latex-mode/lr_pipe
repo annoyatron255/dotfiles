@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: left right pipe
+# key: lr|
+# uuid: lr|
+# condition: (and (texmathp) 'auto)
+# --
+\left| `yas-selected-text`$1 \right| $0

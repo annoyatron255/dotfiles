@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: definite integral
+# key: dint
+# uuid: dint
+# condition: (and (texmathp) (looking-back "[ \t\n\r]dint" nil) 'auto)
+# --
+\int_{${1:-\infty}}^{${2:\infty}} `yas-selected-text`$0

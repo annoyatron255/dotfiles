@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: secant
+# key: sec
+# uuid: sec
+# condition: (and (texmathp) (looking-back "[ \t\n\r]sec" nil) 'auto)
+# --
+\sec `yas-selected-text`$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: subsection*
+# key: ssn
+# uuid: ssn
+# condition: (and (eq yas--active-snippets nil) (looking-back "^[ \t]*ssn" nil))
+# --
+\subsection*{`yas-selected-text`$1}$0

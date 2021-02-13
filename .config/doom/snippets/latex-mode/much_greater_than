@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: much greater than
+# key: >>
+# uuid: >>
+# condition: (and (texmathp) 'auto)
+# --
+\gg

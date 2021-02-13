@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: not equals
+# key: !=
+# uuid: !=
+# condition: (and (texmathp) 'auto)
+# --
+\neq

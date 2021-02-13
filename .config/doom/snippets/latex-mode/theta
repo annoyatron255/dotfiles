@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: theta
+# key: theta
+# uuid: theta
+# condition: (and (texmathp) (looking-back "[^\\]theta" nil) 'auto)
+# --
+\theta`yas-selected-text`$0

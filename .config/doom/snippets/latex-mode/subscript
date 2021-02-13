@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: subscript
+# key: __
+# uuid: __
+# condition: (and (texmathp) 'auto)
+# --
+_{`yas-selected-text`$1}$0

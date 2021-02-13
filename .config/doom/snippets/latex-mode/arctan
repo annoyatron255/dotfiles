@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: arctangent
+# key: arctan
+# uuid: arctan
+# condition: (and (texmathp) (looking-back "[ \t\n\r]arctan" nil) 'auto)
+# --
+\arctan `yas-selected-text`$0

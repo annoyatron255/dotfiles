@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: hat
+# key: hat
+# uuid: hat
+# condition: (and (texmathp) 'auto)
+# --
+\hat{`yas-selected-text`$1}$0

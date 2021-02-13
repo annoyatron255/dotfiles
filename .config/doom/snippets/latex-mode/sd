@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: squared
+# key: sd
+# uuid: sd
+# condition: (and (texmathp) 'auto)
+# --
+^2

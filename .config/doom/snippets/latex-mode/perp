@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: perpendicular
+# key: perp
+# uuid: perp
+# condition: (and (texmathp) (looking-back "[ \t\n\r]perp" nil) 'auto)
+# --
+\perp `yas-selected-text`$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: teletype
+# key: tt
+# uuid: tt
+# condition: (looking-back "[ \t\n\r]tt" nil)
+# --
+\texttt{`yas-selected-text`$1}$0

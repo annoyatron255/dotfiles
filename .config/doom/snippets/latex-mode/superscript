@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: superscript
+# key: ^^
+# uuid: ^^
+# condition: (and (texmathp) 'auto)
+# --
+^{`yas-selected-text`$1}$0

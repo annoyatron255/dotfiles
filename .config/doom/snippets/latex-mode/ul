@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: underline
+# key: ul
+# uuid: ul
+# condition: (looking-back "[ \t\n\r]ul" nil)
+# --
+\underline{`yas-selected-text`$1}$0

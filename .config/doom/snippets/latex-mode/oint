@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: closed integral
+# key: oint
+# uuid: oint
+# condition: (and (texmathp) (looking-back "[ \t\n\r]oint" nil) 'auto)
+# --
+\oint `yas-selected-text`$0

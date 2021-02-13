@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: fraction
+# key: //
+# uuid: //
+# condition: (and (texmathp) 'auto)
+# --
+\frac{`yas-selected-text`$1}{$2}$0

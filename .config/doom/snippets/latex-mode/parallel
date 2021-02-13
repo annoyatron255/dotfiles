@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: parallel
+# key: parallel
+# uuid: parallel
+# condition: (and (texmathp) (looking-back "[ \t\n\r]parallel" nil) 'auto)
+# --
+\parallel `yas-selected-text`$0

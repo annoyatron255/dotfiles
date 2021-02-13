@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: log
+# key: log
+# uuid: log
+# condition: (and (texmathp) (looking-back "[ \t\n\r]log" nil) 'auto)
+# --
+\log `yas-selected-text`$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: math italicize
+# key: it
+# uuid: it_math
+# condition: (and (texmathp) (looking-back "[ \t\n\r]it" nil))
+# --
+\mathit{`yas-selected-text`$1}$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: to
+# key: ->
+# uuid: ->
+# condition: (and (texmathp) 'auto)
+# --
+\to

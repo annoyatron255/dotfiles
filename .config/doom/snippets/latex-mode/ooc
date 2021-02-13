@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: proportional to
+# key: ooc
+# uuid: ooc
+# condition: (and (texmathp) 'auto)
+# --
+\propto

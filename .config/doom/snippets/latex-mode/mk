@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: inline math
+# key: mk
+# uuid: mk
+# condition: (and (looking-back "[ \t\n\r]mk" nil) 'auto)
+# --
+$`yas-selected-text`$1$$0

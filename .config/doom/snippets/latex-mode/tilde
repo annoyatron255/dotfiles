@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: tilde
+# key: ~~
+# uuid: ~~
+# condition: (and (texmathp) 'auto)
+# --
+\sim

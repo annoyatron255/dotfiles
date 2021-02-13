@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: left right arrow
+# key: <->
+# uuid: <->
+# condition: (and (texmathp) 'auto)
+# --
+\leftrightarrow

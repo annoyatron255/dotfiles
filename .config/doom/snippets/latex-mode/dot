@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: dot product
+# key: **
+# uuid: **
+# condition: (and (texmathp) 'auto)
+# --
+\cdot

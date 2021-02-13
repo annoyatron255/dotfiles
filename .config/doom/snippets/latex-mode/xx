@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: cross product
+# key: xx
+# uuid: xx
+# condition: (and (texmathp) 'auto)
+# --
+\times

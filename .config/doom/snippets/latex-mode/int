@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: integral
+# key: int
+# uuid: int
+# condition: (and (texmathp) (looking-back "[ \t\n\r]int" nil) 'auto)
+# --
+\int `yas-selected-text`$0

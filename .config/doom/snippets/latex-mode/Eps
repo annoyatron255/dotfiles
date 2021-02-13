@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Epsilon
+# key: Eps
+# uuid: Eps
+# condition: (and (texmathp) 'auto)
+# --
+\mathcal{E}`yas-selected-text`$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: boldface
+# key: bf
+# uuid: bf
+# condition: (and (not (texmathp)) (looking-back "[ \t\n\r]bf" nil))
+# --
+\textbf{`yas-selected-text`$1}$0

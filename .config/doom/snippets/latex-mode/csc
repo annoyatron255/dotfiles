@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: cosecant
+# key: csc
+# uuid: csc
+# condition: (and (texmathp) (looking-back "[ \t\n\r]csc" nil) 'auto)
+# --
+\csc `yas-selected-text`$0

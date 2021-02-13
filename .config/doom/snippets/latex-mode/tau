@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: tau
+# key: tau
+# uuid: tau
+# condition: (and (texmathp) (looking-back "[^\\]tau" nil) 'auto)
+# --
+\tau`yas-selected-text`$0

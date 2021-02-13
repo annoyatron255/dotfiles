@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: sum
+# key: sum
+# uuid: sum
+# condition: (and (texmathp) (looking-back "[ \t\n\r]sum" nil) 'auto)
+# --
+\sum_{${1:i}=${2:1}}^{${3:N}} $0

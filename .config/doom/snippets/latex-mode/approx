@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: approx equal
+# key: ~=
+# uuid: ~=
+# condition: (and (texmathp) 'auto)
+# --
+\approx

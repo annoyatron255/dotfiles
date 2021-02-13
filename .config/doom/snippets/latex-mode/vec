@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: vec
+# key: vec
+# uuid: vec
+# condition: (and (texmathp) 'auto)
+# --
+\vec{`yas-selected-text`$1}$0
