@@ -68,8 +68,6 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-setopt complete_aliases
-
 plugins=(
 	git
 	fzf
@@ -169,8 +167,28 @@ function notes() {
 	cp ~/.vim/templates/latexmkrc ~/.vim/templates/preamble.tex ./
 	cp ~/.vim/templates/notes.tex "./$FILENAME"
 	sed -i "s/DATE/$(date "+%B %-d, %Y")/g" "./$FILENAME"
-	sed -i "s/SUBJECT/$(basename "$(dirname "$(dirname "$(pwd)")")")/g" "./$FILENAME"
-	vim +11 +VimtexCompile "./$FILENAME"
+	SUBJECT=$(basename "$(dirname "$(dirname "$(pwd)")")" | sed -e "s/\([A-Z]\)\([0-9]\)/\1 \2/g")
+	sed -i "s/SUBJECT/$SUBJECT/g" "./$FILENAME"
+	TYPE=$(basename "$(dirname "$(pwd)")")
+	case $TYPE in
+		hw)
+			TYPE="Homework $(basename "$(pwd)" | sed "s/[^0-9]//g")"
+			;;
+		notes)
+			TYPE="Notes"
+			;;
+		labs)
+			TYPE="Lab $(basename "$(pwd)" | sed "s/[^0-9]//g")"
+			;;
+		quizzes)
+			TYPE="Quiz $(basename "$(pwd)" | sed "s/[^0-9]//g") "
+			;;
+		exams)
+			TYPE="Exam $(basename "$(pwd)" | sed "s/[^0-9]//g")"
+			;;
+	esac
+	sed -i "s/TYPE/$TYPE/g" "./$FILENAME"
+	nvim +11 +VimtexCompile "./$FILENAME"
 }
 
 function t() {
@@ -201,7 +219,7 @@ function tx() {
 	then
 		echo -e "\\\\begin{align*}\n\t\n\\\\end{align*}" > $LATEX_DIR/latex_input.tex
 	fi
-	vim +2 +"call vimtex#syntax#p#amsmath#load()" $LATEX_DIR/latex_input.tex
+	nvim +2 +"call vimtex#syntax#p#amsmath#load()" $LATEX_DIR/latex_input.tex
 	echo -E "${$(<$HOME/.vim/templates/shortdoc.tex)//CONTENTS/$(<$LATEX_DIR/latex_input.tex)}" > $LATEX_DIR/latex.tex
 	( cd $LATEX_DIR ; pdflatex $LATEX_DIR/latex.tex )
 	pdfcrop --margins 12 $LATEX_DIR/latex.pdf $LATEX_DIR/latex.pdf
@@ -233,7 +251,7 @@ function vimbuffer() {
 
 	local byte_offset=$(( ${#PREBUFFER//$'\n'/} + ${#LBUFFER//$'\n'/} + \
 		$(printf "%s" "$prompt_string" | wc -m) ))
-	vim "+${scrollback_line_length}" "+normal ${byte_offset} " -- \
+	nvim "+${scrollback_line_length}" "+normal ${byte_offset} " -- \
 		"$written_file" </dev/tty
 
 	print -Rz - "$(tail -n $(tac "$written_file" | grep -nm1 "$prompt_string" \
@@ -276,3 +294,4 @@ alias tdir='mkdir $(date "+%Y-%m-%d")'
 alias j="jump"
 alias feh="feh --scale-down --auto-zoom --auto-rotate --image-bg \"#000100\""
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles_git/ --work-tree=$HOME'
+alias vim="nvim"
