@@ -1,0 +1,17 @@
+- defaults:
+    link:
+      relink: true
+
+- clean:
+    ~/:
+    ~/.config:
+      recursive: true
+
+- link:
+    ~/.config/:
+      glob: true
+      path: config/*
+    ~/.zshrc: zshrc
+    ~/.vimrc: config/nvim/vimrc.vim
+    ~/.Xresources: Xresources
+    ~/.Xmodmap: Xmodmap
