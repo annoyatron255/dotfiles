@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: sine
-# key: sin
-# uuid: sin
-# condition: (and (texmathp) (looking-back "[ \t\n\r]sin" nil) 'auto)
-# --
-\sin `yas-selected-text`$0

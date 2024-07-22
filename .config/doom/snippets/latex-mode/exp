@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: exponential
-# key: exp
-# uuid: exp
-# condition: (and (texmathp) (looking-back "[ \t\n\r]exp" nil) 'auto)
-# --
-\exp `yas-selected-text`$0

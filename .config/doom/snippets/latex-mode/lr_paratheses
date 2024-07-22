@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: left right paratheses
-# key: lr(
-# uuid: lr(
-# condition: (and (texmathp) 'auto)
-# --
-\left( `yas-selected-text`$1 \right) $0

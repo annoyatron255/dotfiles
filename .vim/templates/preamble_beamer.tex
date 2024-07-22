@@ -1,0 +1,187 @@
+\usepackage{tikz-timing}
+\usetheme{CambridgeUS}
+\usecolortheme{beaver}
+\definecolor{darkred}{RGB}{122, 0, 25}
+
+%\setbeamercolor{palette tertiary}{bg=maroon}
+\setbeamercolor{titlelike}{bg=gray!15!white}
+\setbeamertemplate{itemize items}[default]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\setbeamertemplate{blocks}[rounded]
+\setbeamercolor{block body}{bg=gray!15!white}
+\setbeamercolor{block title}{bg=gray!15!white}
+\setbeamercolor{block body alerted}{bg=gray!15!white}
+\setbeamercolor{block title alerted}{bg=gray!15!white}
+\setbeamercolor{block body example}{bg=gray!15!white}
+\setbeamercolor{block title example}{bg=gray!15!white}
+
+\setbeamercolor{item}{fg=darkred}
+\setbeamercolor{subitem}{fg=darkred}
+\setbeamercolor{subsubitem}{fg=darkred}
+
+\setbeamertemplate{title page}[default][rounded=true]
+
+\beamertemplatenavigationsymbolsempty
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{pgfplots}
+\usepackage[bottom]{footmisc}
+\usepackage{amssymb}
+
+\usepackage{float}
+
+\usepackage[lining,scaled=0.9]{FiraMono}
+\usepackage{raleway}
+\usepackage{karnaugh-map}
+
+\pgfplotsset{width=10cm,compat=1.9}
+\graphicspath{{../figures/}}
+
+%\titleformat*{\section}{\Large\bfseries}
+%\titleformat*{\subsection}{\small\bfseries}
+%\titlespacing*{\section}{0pt}{0mm}{0mm}
+%\titlespacing*{\subsection}{0pt}{0mm}{0mm}
+%\lstset{basicstyle=\ttfamily,breaklines=true}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+
+\usepackage[usefamily=py,gobble=auto]{pythontex}
+\usepackage[outputdir=./build]{minted}
+
+\usepackage{circuitikz}
+
+\def\normalcoord(#1){coordinate(#1)}
+\def\showcoord(#1){node[circle, red, draw, inner sep=1pt,
+	pin={[red, overlay, inner sep=0.5pt, font=\tiny, pin distance=0.1cm,
+	pin edge={red, overlay}]45:#1}](#1){}}
+\let\coord=\normalcoord
+%\let\coord=\showcoord
+
+\usepackage{minted}
+\setminted{
+	autogobble,
+	fontsize=\tiny,
+	tabsize=4,
+	breaklines
+}
+\setpythontexfv{
+	frame=lines,
+	framesep=2mm,
+	fontsize=\footnotesize,
+	linenos,
+	numbersep=6pt,
+	tabsize=4,
+	breaklines
+}
+
+\begin{pythontexcustomcode}[begin]{py}
+from sympy import *
+from sympy.parsing.latex import parse_latex as sympy_parse_latex
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.constants
+
+from scipy.optimize import fsolve
+
+def formatter(input):
+	if type(input) == str:
+		return input
+	else:
+		return latex(input)
+
+pytex.formatter = formatter
+
+def parse_latex(s):
+	s = s.replace(r"\left","").replace(r"\right","")
+
+	symbols_dict = {}
+	globals_copy = globals().copy()
+	for key, value in globals_copy.items():
+		if str(type(value)) == "<class 'sympy.core.symbol.Symbol'>":
+			symbols_dict[key] = value
+
+	expr_str = str(sympy_parse_latex(s)).replace(r"{","").replace(r"}","")
+	expr = parse_expr(expr_str, local_dict=symbols_dict)
+	return expr
+
+def SI(x, unit):
+	x = float(x)
+	sign = ''
+	if x < 0:
+		x = -x
+		sign = '-'
+
+	if x==0:
+		exp = 0
+		exp3 = 0
+		x3 = 0
+	else:
+		exp = int(np.floor(np.log10(x)))
+		exp3 = exp - (exp % 3)
+		x3 = x / (10**exp3)
+		x3 = round(x3, 3)
+		if x3 == int(x3):
+			x3 = int(x3)
+
+	units = [
+		r'\yocto ',
+		r'\zepto ',
+		r'\atto ',
+		r'\femto ',
+		r'\pico ',
+		r'\nano ',
+		r'\micro ',
+		r'\milli ',
+		'',
+		r'\kilo ',
+		r'\mega ',
+		r'\giga ',
+		r'\tera ',
+		r'\peta ',
+		r'\exa ',
+		r'\zetta ',
+		r'\yotta '
+	]
+	exp3_text = ''
+	unit_text = ''
+	if exp3 >= -24 and exp3 <= 24:
+		unit_text = units[ exp3 // 3 + 8]
+	else:
+		exp3_text = "e" + str(exp3)
+
+	return r"\SI{" + sign + str(x3) + exp3_text + r"}{" + unit_text + str(unit) + "}"
+
+mpl.rc('text', usetex=True)
+mpl.rc('font', family='serif', size=12.0)
+mpl.rc('figure', figsize=[5, 3.5])
+mpl.rc('lines', linewidth=1, color='k')
+mpl.rc('savefig', bbox='tight', pad_inches=0.05)
+mpl.rc('pgf', texsystem='pdflatex')
+mpl.rc('legend', fancybox=False, edgecolor='k', framealpha=0.7)
+mpl.rc('axes', titlesize='medium', labelsize='medium')
+mpl.rc('grid', linestyle=':', alpha=0.5)
+
+def reset_plot():
+	plt.clf()
+	plt.margins(x=0, y=0)
+	plt.grid(True, which='major')
+	plt.minorticks_on()
+	plt.tick_params(axis='both', which='both', direction='in', top=True, right=True)
+
+reset_plot()
+\end{pythontexcustomcode}
+
+\begin{pycode}
+1+1
+\end{pycode}

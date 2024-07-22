@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: math blackboard
-# key: bb
-# uuid: bb
-# condition: (and (texmathp) (looking-back "[ \t\n\r]bb" nil))
-# --
-\mathbb{`yas-selected-text`$1}$0

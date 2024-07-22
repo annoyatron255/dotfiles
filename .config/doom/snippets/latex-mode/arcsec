@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: arcsecant
-# key: arcsec
-# uuid: arcsec
-# condition: (and (texmathp) (looking-back "[ \t\n\r]arcsec" nil) 'auto)
-# --
-\arcsec `yas-selected-text`$0

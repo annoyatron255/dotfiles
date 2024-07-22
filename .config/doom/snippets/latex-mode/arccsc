@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: arccosecant
-# key: arccsc
-# uuid: arccsc
-# condition: (and (texmathp) (looking-back "[ \t\n\r]arccsc" nil) 'auto)
-# --
-\arccsc `yas-selected-text`$0

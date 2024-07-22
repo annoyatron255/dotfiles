@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: arccotangent
-# key: arccot
-# uuid: arccot
-# condition: (and (texmathp) (looking-back "[ \t\n\r]arccot" nil) 'auto)
-# --
-\arccot `yas-selected-text`$0

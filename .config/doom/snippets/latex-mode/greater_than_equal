@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: greater than equal
-# key: >=
-# uuid: >=
-# condition: (and (texmathp) 'auto)
-# --
-\ge

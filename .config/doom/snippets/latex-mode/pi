@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: pi
-# key: pi
-# uuid: pi
-# condition: (and (texmathp) (looking-back "[^\\]pi" nil) 'auto)
-# --
-\pi`yas-selected-text`$0

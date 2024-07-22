@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: bar
-# key: bar
-# uuid: bar
-# condition: (and (texmathp) 'auto)
-# --
-\overline{`yas-selected-text`$1}$0

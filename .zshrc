@@ -1,3 +1,4 @@
+#zmodload zsh/zprof
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -73,9 +74,13 @@ plugins=(
 	fzf
 	jump
 	zsh-syntax-highlighting
+	#zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
+
+zstyle ':completion:*:git-add:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion:*:git-add:*' group-name ''
 
 if [ -n "$WINDOWID" ]; then
 	mkdir -p /tmp/urxvtc_ids/
@@ -160,7 +165,7 @@ function notes() {
 	fi
 	index=0
 	while [ -d "$FOLDER" ]; do
-		printf -v FOLDER -- '%s_%01d' "$DATE" "$((++index))"
+		printf -v FOLDER -- '%s_%01d' "$FOLDER" "$((++index))"
 	done
 	mkdir $FOLDER
 	cd $FOLDER
@@ -168,28 +173,45 @@ function notes() {
 	cp ~/.vim/templates/notes.tex "./$FILENAME"
 	sed -i "s/DATE/$(date "+%B %-d, %Y")/g" "./$FILENAME"
 	SUBJECT=$(basename "$(dirname "$(dirname "$(pwd)")")" | sed -e "s/\([A-Z]\)\([0-9]\)/\1 \2/g")
-	sed -i "s/SUBJECT/$SUBJECT/g" "./$FILENAME"
+	SUBJECT=${SUBJECT:u}
 	TYPE=$(basename "$(dirname "$(pwd)")")
+	TYPE=${TYPE:u}
 	case $TYPE in
-		hw)
+		HW)
 			TYPE="Homework $(basename "$(pwd)" | sed "s/[^0-9]//g")"
 			;;
-		notes)
+		NOTE*)
 			TYPE="Notes"
 			;;
-		labs)
+		LAB*)
 			TYPE="Lab $(basename "$(pwd)" | sed "s/[^0-9]//g")"
 			;;
-		quizzes)
-			TYPE="Quiz $(basename "$(pwd)" | sed "s/[^0-9]//g") "
+		PRELAB*)
+			TYPE="Prelab $(basename "$(pwd)" | sed "s/[^0-9]//g")"
 			;;
-		exams)
+		QUIZ*)
+			TYPE="Quiz $(basename "$(pwd)" | sed "s/[^0-9]//g")"
+			;;
+		EXAM*)
 			TYPE="Exam $(basename "$(pwd)" | sed "s/[^0-9]//g")"
 			;;
+		MIDTERM*)
+			TYPE="Midterm $(basename "$(pwd)" | sed "s/[^0-9]//g")"
+			;;
+		DISCUSSION*)
+			TYPE="Discussion $(basename "$(pwd)" | sed "s/[^0-9]//g")"
+			;;
+		PROJECT*)
+			TYPE="Project $(basename "$(pwd)" | sed "s/[^0-9]//g")"
+			;;
+		*)
+			TYPE=${(C)TYPE}
+			;;
 	esac
-	sed -i "s/TYPE/$TYPE/g" "./$FILENAME"
-	nvim +11 +VimtexCompile "./$FILENAME"
+	sed -i "s/TITLE/$SUBJECT $TYPE/g" "./$FILENAME"
+	nvim +'$-2' +VimtexCompile "./$FILENAME"
 }
+alias hw=notes
 
 function t() {
 	if [ $# -eq 0 ]
@@ -204,10 +226,6 @@ function manpdf() {
 	zathura <(man -Tpdf $*) & disown
 }
 
-function za() {
-	zathura $* & disown
-}
-
 function xyzzy() {
 	echo "Nothing happens."
 }
@@ -219,7 +237,7 @@ function tx() {
 	then
 		echo -e "\\\\begin{align*}\n\t\n\\\\end{align*}" > $LATEX_DIR/latex_input.tex
 	fi
-	nvim +2 +"call vimtex#syntax#p#amsmath#load()" $LATEX_DIR/latex_input.tex
+	nvim +2 $LATEX_DIR/latex_input.tex
 	echo -E "${$(<$HOME/.vim/templates/shortdoc.tex)//CONTENTS/$(<$LATEX_DIR/latex_input.tex)}" > $LATEX_DIR/latex.tex
 	( cd $LATEX_DIR ; pdflatex $LATEX_DIR/latex.tex )
 	pdfcrop --margins 12 $LATEX_DIR/latex.pdf $LATEX_DIR/latex.pdf
@@ -264,6 +282,36 @@ function vimbuffer() {
 zle -N vimbuffer
 bindkey '^P' vimbuffer
 
+function backuphd() {
+	pacman -Q > ~/.pkg_list.txt
+
+	sudo mkdir -p /mnt/restic
+	sudo mount -U CD59-36D5 /mnt/restic
+
+	sudo restic -r /mnt/restic/restic-repo backup ~/ --exclude-file=/home/jack/.restic_exclude
+	sudo restic -r /mnt/restic/restic-repo backup /etc
+
+	sudo umount /mnt/restic
+	sudo rmdir /mnt/restic
+}
+
+function backupgdrive() {
+	pacman -Q > ~/.pkg_list.txt
+
+	restic -r rclone:gdrive:restic-repo backup ~/ --exclude-file=/home/jack/.restic_exclude
+	#restic -r rclone:gdrive:restic-repo backup /etc
+}
+
+# search pdf notes (Jythonscript)
+function pdfsearch() {
+	if [ $# -gt 0 ]
+	then
+		pdfgrep -Ri "$*" --color "always" --cache | sort -h
+	fi
+}
+
+setopt HIST_IGNORE_SPACE
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -295,3 +343,12 @@ alias j="jump"
 alias feh="feh --scale-down --auto-zoom --auto-rotate --image-bg \"#000100\""
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles_git/ --work-tree=$HOME'
 alias vim="nvim"
+alias vimdiff="nvim -d"
+alias bat="bat -pp"
+alias za="zathura --fork"
+alias ccstudio="GTK_THEME=Adwaita $HOME/.local/igfw-toolchain/install/ccs1230/ccs/eclipse/ccstudio"
+alias DSLite="/opt/ccstudio/ccs/ccs_base/DebugServer/bin/DSLite"
+alias nohistory=" unset HISTFILE"
+alias miniterm="python -m serial.tools.miniterm"
+
+export PATH="/home/jack/.local/bin:$PATH"

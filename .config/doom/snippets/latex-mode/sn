@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: section*
-# key: sn
-# uuid: sn
-# condition: (and (eq yas--active-snippets nil) (looking-back "^[ \t]*sn" nil))
-# --
-\section*{`yas-selected-text`$1}$0

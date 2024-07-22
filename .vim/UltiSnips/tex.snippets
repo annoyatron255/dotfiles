@@ -1,28 +1,16 @@
 # Math Context
 global !p
-texMathZones = ['texMathZone'+x for x in ['A', 'AS', 'B', 'BS', 'C',
-'CS', 'D', 'DS', 'E', 'ES', 'F', 'FS', 'G', 'GS', 'H', 'HS', 'I', 'IS',
-'J', 'JS', 'K', 'KS', 'L', 'LS', 'DS', 'V', 'W', 'X', 'Y', 'Z',
-'AmsA', 'AmsB', 'AmsC', 'AmsD', 'AmsE', 'AmsF', 'AmsG', 'AmsAS',
-'AmsBS', 'AmsCS', 'AmsDS', 'AmsES', 'AmsFS', 'AmsGS']]
-
-texIgnoreMathZones = ['texMathText']
-
-texMathZoneIds = vim.eval('map('+str(texMathZones)+", 'hlID(v:val)')")
-texIgnoreMathZoneIds = vim.eval('map('+str(texIgnoreMathZones)+", 'hlID(v:val)')")
-
-ignore = texIgnoreMathZoneIds[0]
 
 def math():
-	synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
-	try:
-		first = next(
-			i for i in reversed(synstackids)
-			if i in texIgnoreMathZoneIds or i in texMathZoneIds
-        	)
-		return first != ignore
-	except StopIteration:
-		return False
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+
+def comment():
+	return vim.eval('vimtex#syntax#in_comment()') == '1'
+
+def env(name):
+	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+	return x != '0' and y != '0'
+
 endglobal
 
 snippet beg "begin/end" bA
@@ -31,11 +19,11 @@ snippet beg "begin/end" bA
 \\end{$1}
 endsnippet
 
-snippet dm "display math" bA
-\\[
-	${1:${VISUAL}}
-\\]$0
-endsnippet
+#snippet dm "display math" bA
+#\\[
+#	${1:${VISUAL}}
+#\\]$0
+#endsnippet
 
 snippet adm "aligned display math" bA
 \\begin{align*}
@@ -53,31 +41,31 @@ snippet // "fraction" iA
 \\frac{$1}{$2}$0
 endsnippet
 
-context "math()"
-snippet / "fraction" i
-\\frac{${VISUAL}}{$1}$0
-endsnippet
+#context "math()"
+#snippet / "fraction" i
+#\\frac{${VISUAL}}{$1}$0
+#endsnippet
 
 context "math()"
 snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "fraction" wrA
 \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 endsnippet
 
-priority 1000
-context "math()"
-snippet '^.*\)/' "() Fraction" wrA
-`!p
-stripped = match.string[:-1]
-depth = 0
-i = len(stripped) - 1
-while True:
-	if stripped[i] == ')': depth += 1
-	if stripped[i] == '(': depth -= 1
-	if depth == 0: break;
-	i -= 1
-snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
-`{$1}$0
-endsnippet
+#priority 1000
+#context "math()"
+#snippet '^.*\)/' "() Fraction" wrA
+#`!p
+#stripped = match.string[:-1]
+#depth = 0
+#i = len(stripped) - 1
+#while True:
+#	if stripped[i] == ')': depth += 1
+#	if stripped[i] == '(': depth -= 1
+#	if depth == 0: break;
+#	i -= 1
+#snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+#`{$1}$0
+#endsnippet
 
 # auto subscripts
 context "math()"
@@ -85,10 +73,10 @@ snippet '([A-Za-z])(\d)' "auto subscript" wrA
 `!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
 endsnippet
 
-context "math()"
-snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
-`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
-endsnippet
+#context "math()"
+#snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
+#`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+#endsnippet
 
 # math shorthand
 context "math()"
@@ -101,15 +89,15 @@ snippet ^^ "superscript" iA
 ^{$1}$0
 endsnippet
 
-context "math()"
-snippet pw "superscript" iA
-^{$1}$0
-endsnippet
-
-context "math()"
-snippet pow "superscript" iA
-^{$1}$0
-endsnippet
+#context "math()"
+#snippet pw "superscript" iA
+#^{$1}$0
+#endsnippet
+#
+#context "math()"
+#snippet pow "superscript" iA
+#^{$1}$0
+#endsnippet
 
 context "math()"
 snippet sd "squared" iA
@@ -126,10 +114,10 @@ snippet ooo "infinity" iA
 \\infty
 endsnippet
 
-context "math()"
-snippet ooc "proportional to" iA
-\\propto
-endsnippet
+#context "math()"
+#snippet ooc "proportional to" iA
+#\\propto
+#endsnippet
 
 #context "math()"
 #snippet || "parallel" iA
@@ -151,10 +139,10 @@ snippet == "align equals" iA
 &=
 endsnippet
 
-context "math()"
-snippet ~~ "~" iA
-\\sim
-endsnippet
+#context "math()"
+#snippet ~~ "~" iA
+#\\sim
+#endsnippet
 
 context "math()"
 snippet ~= "approx equal" iA
@@ -171,15 +159,15 @@ snippet >= "greater than equal" iA
 \\ge
 endsnippet
 
-context "math()"
-snippet << "much less than" iA
-\\ll
-endsnippet
-
-context "math()"
-snippet >> "much greater than" iA
-\\gg
-endsnippet
+#context "math()"
+#snippet << "much less than" iA
+#\\ll
+#endsnippet
+#
+#context "math()"
+#snippet >> "much greater than" iA
+#\\gg
+#endsnippet
 
 context "math()"
 snippet -> "to" iA
@@ -191,10 +179,10 @@ snippet => "implies" iA
 \\implies
 endsnippet
 
-context "math()"
-snippet <-> "left right arrow" iA
-\\leftrightarrow
-endsnippet
+#context "math()"
+#snippet <-> "left right arrow" iA
+#\\leftrightarrow
+#endsnippet
 
 context "math()"
 snippet xx "cross product" iA
@@ -206,52 +194,52 @@ snippet ** "dot product" iA
 \\cdot
 endsnippet
 
-priority 10
-snippet si "SI units" i
-\\,\\si{$1}$0
-endsnippet
+#priority 10
+#snippet si "SI units" i
+#\\,\\si{$1}$0
+#endsnippet
 
 priority 10
 snippet SI "SI units with number" i
 \\SI{$1}{$2}$0
 endsnippet
 
-snippet py "inline python" i
-\\py{$1}$0
-endsnippet
+#snippet py "inline python" i
+#\\py{$1}$0
+#endsnippet
+#
+#priority 100
+#snippet pysi "python SI units with number" iA
+#\\py{SI($1, r"${2:`!p
+#var_to_unit = {'V': 'V', 'I': 'A', 'R': r"\ohm", 'P': 'W', 'C': 'F', 'L': 'H', 'g': 'S', 'q': 'C', 'E': 'J', 'f': "Hz", 't': 's'}
+#if t[1] != "":
+#	if t[1][0] in var_to_unit:
+#		snip.rv = var_to_unit[t[1][0]]
+#`}")}$0
+#endsnippet
+#
+#priority 100
+#snippet pySI "python SI units with number" iA
+#\\py{SI($1, r"${2:`!p
+#var_to_unit = {'V': 'V', 'I': 'A', 'R': r"\ohm", 'P': 'W', 'C': 'F', 'L': 'H', 'g': 'S', 'q': 'C', 'E': 'J', 'f': "Hz", 't': 's'}
+#if t[1] != "":
+#	if t[1][0] in var_to_unit:
+#		snip.rv = var_to_unit[t[1][0]]
+#`}")}$0
+#endsnippet
 
-priority 100
-snippet pysi "python SI units with number" iA
-\\py{SI($1, r"${2:`!p
-var_to_unit = {'V': 'V', 'I': 'A', 'R': r"\ohm", 'P': 'W', 'C': 'F', 'L': 'H', 'g': 'S', 'q': 'C', 'E': 'J', 'f': "Hz", 't': 's'}
-if t[1] != "":
-	if t[1][0] in var_to_unit:
-		snip.rv = var_to_unit[t[1][0]]
-`}")}$0
-endsnippet
-
-priority 100
-snippet pySI "python SI units with number" iA
-\\py{SI($1, r"${2:`!p
-var_to_unit = {'V': 'V', 'I': 'A', 'R': r"\ohm", 'P': 'W', 'C': 'F', 'L': 'H', 'g': 'S', 'q': 'C', 'E': 'J', 'f': "Hz", 't': 's'}
-if t[1] != "":
-	if t[1][0] in var_to_unit:
-		snip.rv = var_to_unit[t[1][0]]
-`}")}$0
-endsnippet
-
-priority 10
-context "math()"
-snippet "hat" "hat" riA
-\\hat{${1:${VISUAL}}$0
-endsnippet
-
-priority 100
-context "math()"
-snippet "([a-zA-Z])hat" "hat" riA
-\\hat{`!p snip.rv=match.group(1)`}
-endsnippet
-
+#priority 10
+#context "math()"
+#snippet "hat" "hat" riA
+#\\hat{${1:${VISUAL}}$0
+#endsnippet
+#
+#priority 100
+#context "math()"
+#snippet "([a-zA-Z])hat" "hat" riA
+#\\hat{`!p snip.rv=match.group(1)`}
+#endsnippet
+#
 priority 10
 context "math()"
 snippet "bar" "bar" riA
@@ -263,19 +251,19 @@ context "math()"
 snippet "([a-zA-Z])bar" "bar" riA
 \\overline{`!p snip.rv=match.group(1)`}
 endsnippet
-
-priority 10
-context "math()"
-snippet "vec" "vec" riA
-\\vec{${1:${VISUAL}}$0
-endsnippet
-
-priority 100
-context "math()"
-snippet "([a-zA-Z])vec" "vec" riA
-\\vec{`!p snip.rv=match.group(1)`}
-endsnippet
-
+#
+#priority 10
+#context "math()"
+#snippet "vec" "vec" riA
+#\\vec{${1:${VISUAL}}$0
+#endsnippet
+#
+#priority 100
+#context "math()"
+#snippet "([a-zA-Z])vec" "vec" riA
+#\\vec{`!p snip.rv=match.group(1)`}
+#endsnippet
+#
 priority 100
 context "math()"
 snippet "(\\?\w)(,\.|\.,)" "Vector postfix" riA
@@ -289,10 +277,10 @@ snippet "(\\\w+)(,\.|\.,)" "Vector postfix" riA
 endsnippet
 
 # brackets
-context "math()"
-snippet () "left( right)" iA
-\left( ${1:${VISUAL}} \right) $0
-endsnippet
+#context "math()"
+#snippet () "left( right)" iA
+#\left( ${1:${VISUAL}} \right) $0
+#endsnippet
 
 snippet lr "left( right)" i
 \left( ${1:${VISUAL}} \right) $0
@@ -323,15 +311,20 @@ snippet lr< "leftangle rightangle" iA
 endsnippet
 
 # math functions
-context "math()"
-snippet sum "sum" wA
-\\sum_{${1:i}=${2:1}}^{${3:N}} $0
-endsnippet
+#context "math()"
+#snippet sum "sum" wA
+#\\sum_{${1:i}=${2:1}}^{${3:N}} $0
+#endsnippet
 
 context "math()"
-snippet lim "limit" wA
-\\lim_{${1:n} \\to ${2:\infty}} $0
+snippet sum "sum" wA
+\\sum $0
 endsnippet
+
+#context "math()"
+#snippet lim "limit" wA
+#\\lim_{${1:n} \\to ${2:\infty}} $0
+#endsnippet
 
 priority 300
 context "math()"
@@ -339,17 +332,17 @@ snippet dint "definite integral" wA
 \\int_{${1:-\infty}}^{${2:\infty}} ${0:${VISUAL}}
 endsnippet
 
-priority 200
-context "math()"
-snippet '(?<!\\)(sin|cos|tan|arcsin|arccos|arctan|sec|csc|cot|arcsec|arccsc|arccot)' "trig functions" rwA
-\\`!p snip.rv = match.group(1) + " "`
-endsnippet
-
-priority 100
-context "math()"
-snippet '(?<!\\)(ln|log|exp|perp|parallel|int|oint|pm)' "misc functions" rwA
-\\`!p snip.rv = match.group(1) + " "`
-endsnippet
+#priority 200
+#context "math()"
+#snippet '(?<!\\)(sin|cos|tan|arcsin|arccos|arctan|sec|csc|cot|arcsec|arccsc|arccot)' "trig functions" rwA
+#\\`!p snip.rv = match.group(1) + " "`
+#endsnippet
+#
+#priority 100
+#context "math()"
+#snippet '(?<!\\)(ln|log|exp|perp|parallel|int|oint|pm)' "misc functions" rwA
+#\\`!p snip.rv = match.group(1) + " "`
+#endsnippet
 
 context "math()"
 snippet sqrt "square root" iA
@@ -357,27 +350,27 @@ snippet sqrt "square root" iA
 endsnippet
 
 # special chars
-context "math()"
-snippet '(?<!\\)(pi|ell|tau|mu|chi|theta|omega)' "lowercase greek" riA
-\\`!p snip.rv = match.group(1)`
-endsnippet
+#context "math()"
+#snippet '(?<!\\)(pi|ell|tau|mu|chi|theta|omega)' "lowercase greek" riA
+#\\`!p snip.rv = match.group(1)`
+#endsnippet
 
-context "math()"
-snippet eps "epsilon" iA
-\\varepsilon
-endsnippet
-
-context "math()"
-snippet Eps "Epsilon" iA
-\\mathcal{E}
-endsnippet
+#context "math()"
+#snippet eps "epsilon" iA
+#\\varepsilon
+#endsnippet
+#
+#context "math()"
+#snippet Eps "Epsilon" iA
+#\\mathcal{E}
+#endsnippet
 
 # matrices
-snippet bmat "bracket matrix" iA
-\\begin{bmatrix*}[r]
-	$1
-\\end{bmatrix*}$0
-endsnippet
+#snippet bmat "bracket matrix" iA
+#\\begin{bmatrix*}[r]
+#	$1
+#\\end{bmatrix*}$0
+#endsnippet
 
 # typefaces
 priority 10
@@ -396,11 +389,11 @@ snippet it "italicize" w
 \\textit{${1:${VISUAL}}}$0
 endsnippet
 
-priority 100
-context "math()"
-snippet it "math italicize" w
-\\mathit{${1:${VISUAL}}}$0
-endsnippet
+#priority 100
+#context "math()"
+#snippet it "math italicize" w
+#\\mathit{${1:${VISUAL}}}$0
+#endsnippet
 
 snippet ul "underline" w
 \\underline{${1:${VISUAL}}}$0
@@ -417,10 +410,22 @@ snippet tt "text mode" iA
 \\text{$1}$0
 endsnippet
 
+#context "math()"
+#snippet txt "text mode" iA
+#\\text{$1}$0
+#endsnippet
+
+priority 1000
 context "math()"
-snippet txt "text mode" iA
-\\text{$1}$0
+snippet itt "text mode" iA
+\\intertext{$1}$0
 endsnippet
+
+#priority 1000
+#context "math()"
+#snippet itxt "text mode" iA
+#\\intertext{$1}$0
+#endsnippet
 
 context "math()"
 snippet bb "math blackboard" w
@@ -466,63 +471,63 @@ snippet sssn "subsubsection" b
 endsnippet
 
 # MATLAB evaluate
-priority 1000
-snippet matlab "matlab block" w
-matlab $1 matlab$0
-endsnippet
-
-priority 10000
-snippet 'matlab(.*)matlab' "evaluate matlab" wr
-`!p
-import subprocess
-snip.rv = subprocess.check_output(['matlab', '-batch', match.group(1)])
-`
-endsnippet
-
-priority 1000
-snippet math "mathematica block" w
-math $1 math$0
-endsnippet
-
-priority 10000
-snippet 'math(.*)math' "evaluate mathematica" wr
-`!p
-import subprocess
-code = 'ToString[' + match.group(1) + ', TeXForm]'
-snip.rv = subprocess.check_output(['wolframscript', '-code', code])
-`
-endsnippet
-
-priority 20000
-snippet 'math(.*)math' "evaluate mathematica" wr
-`!p
-import subprocess
-code = 'ToString[ToExpression["' + match.group(1).replace('\\', '\\\\') + '", TeXForm], TeXForm]'
-snip.rv = subprocess.check_output(['wolframscript', '-code', code])
-`
-endsnippet
-
+#priority 1000
+#snippet matlab "matlab block" w
+#matlab $1 matlab$0
+#endsnippet
+#
+#priority 10000
+#snippet 'matlab(.*)matlab' "evaluate matlab" wr
+#`!p
+#import subprocess
+#snip.rv = subprocess.check_output(['matlab', '-batch', match.group(1)])
+#`
+#endsnippet
+#
+#priority 1000
+#snippet math "mathematica block" w
+#math $1 math$0
+#endsnippet
+#
+#priority 10000
+#snippet 'math(.*)math' "evaluate mathematica" wr
+#`!p
+#import subprocess
+#code = 'ToString[' + match.group(1) + ', TeXForm]'
+#snip.rv = subprocess.check_output(['wolframscript', '-code', code])
+#`
+#endsnippet
+#
+#priority 20000
+#snippet 'math(.*)math' "evaluate mathematica" wr
+#`!p
+#import subprocess
+#code = 'ToString[ToExpression["' + match.group(1).replace('\\', '\\\\') + '", TeXForm], TeXForm]'
+#snip.rv = subprocess.check_output(['wolframscript', '-code', code])
+#`
+#endsnippet
+#
 priority 1000
 snippet sympy "sympy block " w
 sympy $1 sympy$0
 endsnippet
 
-priority 10000
-snippet 'sympy(.*)sympy' "evaluate sympy" wr
-\\[
-`!p
-from sympy import *
-x, y, z, t = symbols('x y z t')
-k, m, n = symbols('k m n', integer=True)
-f, g, h = symbols('f g h', cls=Function)
-init_printing()
-snip.rv = eval('latex(' + match.group(1).replace('\\', '') \
-    .replace('^', '**') \
-    .replace('{', '(') \
-    .replace('}', ')') + ')')
-`
-\\]
-endsnippet
+#priority 10000
+#snippet 'sympy(.*)sympy' "evaluate sympy" wr
+#\\[
+#`!p
+#from sympy import *
+#x, y, z, t = symbols('x y z t')
+#k, m, n = symbols('k m n', integer=True)
+#f, g, h = symbols('f g h', cls=Function)
+#init_printing()
+#snip.rv = eval('latex(' + match.group(1).replace('\\', '') \
+#    .replace('^', '**') \
+#    .replace('{', '(') \
+#    .replace('}', ')') + ')')
+#`
+#\\]
+#endsnippet
 
 priority 20000
 context "math()"

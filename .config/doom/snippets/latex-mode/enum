@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: enumerate
-# key: enum
-# uuid: enum
-# condition: (looking-back "^[ \t]*enum" nil)
-# --
-\begin{enumerate}
-	\item `yas-selected-text`$0
-\end{enumerate}

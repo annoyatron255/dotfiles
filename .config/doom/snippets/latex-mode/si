@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: SI units
-# key: si
-# uuid: si
-# --
-\,\si{`yas-selected-text`$1}$0

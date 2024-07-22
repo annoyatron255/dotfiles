@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: text in math
-# key: txt
-# uuid: txt
-# condition: (and (texmathp) 'auto)
-# --
-\text{`yas-selected-text`$1}$0

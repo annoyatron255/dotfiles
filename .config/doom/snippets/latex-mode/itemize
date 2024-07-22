@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: itemize
-# key: itemize
-# uuid: itemize
-# condition: (looking-back "^[ \t]*itemize" nil)
-# --
-\begin{itemize}
-	\item `yas-selected-text`$0
-\end{itemize}

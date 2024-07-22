@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: tangent
-# key: tan
-# uuid: tan
-# condition: (and (texmathp) (looking-back "[ \t\n\r]tan" nil) 'auto)
-# --
-\tan `yas-selected-text`$0

@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: align display math
-# key: adm
-# uuid: adm
-# condition: (and (looking-back "^[ \t]*adm" nil) 'auto)
-# --
-\begin{align*}
-	`yas-selected-text`$1
-\end{align*}$0

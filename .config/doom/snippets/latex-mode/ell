@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: ell
-# key: ell
-# uuid: ell
-# condition: (and (texmathp) (looking-back "[^\\]ell" nil) 'auto)
-# --
-\ell`yas-selected-text`$0

@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: math boldface
-# key: bf
-# uuid: bf_math
-# condition: (and (texmathp) (looking-back "[ \t\n\r]bf" nil))
-# --
-\mathbf{`yas-selected-text`$1}$0

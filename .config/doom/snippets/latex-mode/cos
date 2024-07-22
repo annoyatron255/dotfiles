@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: cosine
-# key: cos
-# uuid: cos
-# condition: (and (texmathp) (looking-back "[ \t\n\r]cos" nil) 'auto)
-# --
-\cos `yas-selected-text`$0

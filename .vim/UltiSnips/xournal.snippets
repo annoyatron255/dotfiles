@@ -1,0 +1,56 @@
+# Math Context
+global !p
+
+def math():
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+
+def comment():
+	return vim.eval('vimtex#syntax#in_comment()') == '1'
+
+def env(name):
+	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+	return x != '0' and y != '0'
+
+endglobal
+
+priority 1
+snippet adm "aligned display math" bA
+\\[\\begin{aligned}
+	${1:${VISUAL}}
+\\end{aligned}\\]$0
+endsnippet
+
+priority 101
+context "math()"
+snippet "\[\[(.*?)\]\]" "Vector" wr
+`!p
+l = match.group(1).split(",")
+snip.rv = "\\begin{bmatrix}"
+snip >> 1
+for s in l:
+    snip += s + " \\\\"
+snip << 1
+snip += "\\end{bmatrix}"
+`
+endsnippet
+
+context "math()"
+priority 1001
+snippet "\[(.*?),(.*?)\]" "Matrix" wr
+`!p
+rows = (match.group(1) + ',' + match.group(2)).split(",,") # row separator
+snip.rv = "\\begin{bmatrix}"
+snip >> 1
+for r in rows:
+    col = r.split(",") # column separator
+    line = ""
+    for i, c in enumerate(col):
+        line += c + " "
+        if i != len(col) - 1:
+             line += "& "
+    snip += line + "\\\\"
+snip << 1
+snip += "\\end{bmatrix}"
+`
+endsnippet
+

@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: implies
-# key: =>
-# uuid: =>
-# condition: (and (texmathp) 'auto)
-# --
-\implies

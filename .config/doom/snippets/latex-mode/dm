@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: display math
-# key: dm
-# uuid: dm
-# condition: (and (looking-back "^[ \t]*dm" nil) 'auto)
-# --
-\[
-	`yas-selected-text`$1
-\]$0

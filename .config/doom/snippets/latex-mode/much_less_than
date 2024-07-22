@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: much less than
-# key: <<
-# uuid: <<
-# condition: (and (texmathp) 'auto)
-# --
-\ll

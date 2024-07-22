@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: italicize
-# key: it
-# uuid: it
-# condition: (and (not (texmathp)) (looking-back "[ \t\n\r]it" nil))
-# --
-\textit{`yas-selected-text`$1}$0

@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: plus/minus
-# key: pm
-# uuid: pm
-# condition: (and (texmathp) (looking-back "[ \t\n\r]pm" nil) 'auto)
-# --
-\pm `yas-selected-text`$0

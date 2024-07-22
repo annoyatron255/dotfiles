@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: chi
-# key: chi
-# uuid: chi
-# condition: (and (texmathp) (looking-back "[^\\]chi" nil) 'auto)
-# --
-\chi`yas-selected-text`$0

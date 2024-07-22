@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: inline python
-# key: py
-# uuid: py
-# --
-\py{`yas-selected-text`$1}$0
