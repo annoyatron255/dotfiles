@@ -1,0 +1,10 @@
+[Unit]
+Description=awesomewm session
+PartOf=awesome-session.target
+Wants=awesome-session.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
+Restart=on-failure
