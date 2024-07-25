@@ -11,10 +11,9 @@
     ~/.config/:
       glob: true
       path: config/*
-      exclude: config/systemd
+      exclude: ["config/systemd"]
     ~/.config/systemd/user/awesome-session.service: config/systemd/user/awesome-session.service
     ~/.config/systemd/user/awesome-session.target: config/systemd/user/awesome-session.target
     ~/.zshrc: zshrc
     ~/.vimrc: config/nvim/vimrc.vim
     ~/.Xresources: Xresources
-    ~/.Xmodmap: Xmodmap
