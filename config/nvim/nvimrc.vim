@@ -102,6 +102,8 @@ noremap <leader>f :Files<CR>
 noremap <leader>r :Rg<CR>
 " toggle nvim-cmp
 noremap <leader>c :lua require("config.nvim-cmp").toggle_completion()<CR>
+" switch header
+noremap <leader>h :ClangdSwitchSourceHeader<CR>
 
 " colorscheme
 set termguicolors

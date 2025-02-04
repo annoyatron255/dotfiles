@@ -16,4 +16,7 @@
     ~/.config/systemd/user/awesome-session.target: config/systemd/user/awesome-session.target
     ~/.zshrc: zshrc
     ~/.vimrc: config/nvim/vimrc.vim
+    ~/.gdbinit: gdbinit
+    ~/.gdbinit.py: gdbinit.py
     ~/.Xresources: Xresources
+    ~/.lesskey: lesskey

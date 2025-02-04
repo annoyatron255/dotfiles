@@ -1,4 +1,0 @@
-source $HOME/.vimrc
-
-set nonumber
-set norelativenumber

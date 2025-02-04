@@ -83,8 +83,8 @@ zstyle ':completion:*:git-add:*:descriptions' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*:git-add:*' group-name ''
 
 if [ -n "$WINDOWID" ]; then
-	mkdir -p /tmp/urxvtc_ids/
-	echo $$ > /tmp/urxvtc_ids/$WINDOWID
+	mkdir -p /tmp/terminal_ids/
+	echo $$ > /tmp/terminal_ids/$WINDOWID
 fi
 
 # User configuration
@@ -169,8 +169,8 @@ function notes() {
 	done
 	mkdir $FOLDER
 	cd $FOLDER
-	cp ~/.vim/templates/latexmkrc ~/.vim/templates/preamble.tex ./
-	cp ~/.vim/templates/notes.tex "./$FILENAME"
+	cp ~/.config/nvim/templates/latexmkrc ~/.config/nvim/templates/preamble.tex ./
+	cp ~/.config/nvim/templates/notes.tex "./$FILENAME"
 	sed -i "s/DATE/$(date "+%B %-d, %Y")/g" "./$FILENAME"
 	SUBJECT=$(basename "$(dirname "$(dirname "$(pwd)")")" | sed -e "s/\([A-Z]\)\([0-9]\)/\1 \2/g")
 	SUBJECT=${SUBJECT:u}
@@ -238,7 +238,7 @@ function tx() {
 		echo -e "\\\\begin{align*}\n\t\n\\\\end{align*}" > $LATEX_DIR/latex_input.tex
 	fi
 	nvim +2 $LATEX_DIR/latex_input.tex
-	echo -E "${$(<$HOME/.vim/templates/shortdoc.tex)//CONTENTS/$(<$LATEX_DIR/latex_input.tex)}" > $LATEX_DIR/latex.tex
+	echo -E "${$(<$HOME/.config/nvim/templates/shortdoc.tex)//CONTENTS/$(<$LATEX_DIR/latex_input.tex)}" > $LATEX_DIR/latex.tex
 	( cd $LATEX_DIR ; pdflatex $LATEX_DIR/latex.tex )
 	pdfcrop --margins 12 $LATEX_DIR/latex.pdf $LATEX_DIR/latex.pdf
 	pdf2svg $LATEX_DIR/latex.pdf $LATEX_DIR/latex.svg
@@ -343,6 +343,7 @@ alias j="jump"
 alias feh="feh --scale-down --auto-zoom --auto-rotate --image-bg \"#000100\""
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles_git/ --work-tree=$HOME'
 alias vim="nvim"
+alias v="nvim"
 alias vimdiff="nvim -d"
 alias bat="bat -pp"
 alias za="zathura --fork"
@@ -352,3 +353,4 @@ alias nohistory=" unset HISTFILE"
 alias miniterm="python -m serial.tools.miniterm"
 
 export PATH="/home/jack/.local/bin:$PATH"
+

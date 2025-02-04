@@ -119,6 +119,9 @@ hi DiagnosticUnderlineWarn guisp=Orange gui=undercurl
 hi DiagnosticUnderlineInfo guisp=LightBlue gui=undercurl
 hi DiagnosticUnderlineHint guisp=LightGrey gui=undercurl
 
+hi @lsp.typemod.variable.fileScope.c gui=italic
+hi @lsp.typemod.variable.globalScope.c gui=italic,bold
+
 "
 " Support for 256-color terminal
 "
@@ -214,6 +217,10 @@ if &t_Co > 255
 	hi NonText         ctermfg=59
 
 	hi SpecialKey      ctermfg=59
+
+
+	hi @lsp.typemod.variable.fileScope.c cterm=italic
+	hi @lsp.typemod.variable.globalScope.c cterm=italic,bold
 endif
 
 " Must be at the end, because of ctermbg=234 bug.
